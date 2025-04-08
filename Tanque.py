@@ -14,7 +14,11 @@ class Tanque():
     def cargar(self):
         if self.balas_cargadas + 1 <= self.balas_cap:
             self.balas_cargadas += 1
+            print(f"El tanque {self.id} ha cargado una bala. {self.balas_cargadas}/{self.balas_cap}")
             return True
+        # puse variable balas_cargadas en vez de balas_cap, igualmente cualquier de las dos deberia de servir
+        # aunque no creo que el problema radique aqui
+        print(f"tanque {self.id} cargado al maximo ({self.balas_cargadas} balas cargadas)")
         return False
     
     def apuntar(self):
@@ -60,18 +64,24 @@ class Tanque():
         if self.balas_cargadas > 0:
             balas_a_disparar = self.preguntar_cantidad_disparos()
 
+            probabilidad_acierto = random.randint(0,100)
+            self.balas_cargadas -= balas_a_disparar
             if balas_a_disparar == 0:
                 print("No se disparo ninguna bala, perdiste el turno")
                 # TODO: mmm no me gusta que pierda el turno 🤔, luego veré que hacer
             elif self.apuntando: # Si el usuario eligió a quien apuntar
-                self.balas_cargadas -= balas_a_disparar
-                probabilidad_acierto = random.randint(0,100)
+                # Aqui esta el error, esta dentro de una sola condicion de nuevo
+                #solución: mover la variable afuera de las condiciones
+                #igual que la anterior
+                #solución: mover la variable afuera de las condiciones
                 probabilidad_dos = random.randint(70,80)
                 
                 if probabilidad_acierto <= probabilidad_dos:
                     tanque_apuntado = self.encontrar_tanque()
                     if tanque_apuntado: 
                         tanque_apuntado.recibir_disparo(balas_a_disparar)
+                else:
+                    self.fallar_tiro(balas_a_disparar)
                 self.apuntando = False # hacemos que después no apunte a nadie
             #Aqui me faltó quitar identación
             else: # si el usuario no eligió a quien apuntar
@@ -131,4 +141,14 @@ class Tanque():
             #ahora bien, hagamos que el tanque no pueda apuntar
             # a otros tanques que ya han sido abatidos
             # para eso solo modificaremos un metodo que ya hicimos anteriormente
-            # y ese metodo es... 
+            # y ese metodo es...
+    
+    def tunear_tanque(self):
+        if self.vidas < 5:
+            self.vidas += 1
+            print(f"recuperacion de vida de {self.id}: {self.vidas}/5!🍃")
+        
+        self.balas_cap += 1
+        print(f"Capacidad maxima de balas aumentada a {self.balas_cap}. (cargadas actualmente: {self.balas_cargadas})")
+        
+        
