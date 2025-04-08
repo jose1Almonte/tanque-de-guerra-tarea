@@ -3,7 +3,7 @@ import random
 import time
 
 class Tanque():
-    def __init__(self, id, lista_de_tanques: list, vidas = 5, balas_cap = 1):
+    def __init__(self, id: str, lista_de_tanques: list, vidas = 5, balas_cap = 1):
         self.id = id
         self.vidas = vidas
         self.balas_cap = balas_cap
@@ -49,8 +49,7 @@ class Tanque():
     def preguntar_cantidad_disparos(self):
         while True:
             try:
-                print("numero")
-                balas_cargadas = copy.deepcopy(self.balas_cargadas)
+                balas_cargadas = self.balas_cargadas
                 print("balas disponibles:",end=" ")
                 print(balas_cargadas)
                 numero = int(input("Por favor, ingrese la cantidad de balas que desea disparar: "))
@@ -101,7 +100,7 @@ class Tanque():
 
     def fallar_tiro(self,balas_a_disparar):
         print("Fallaste el tiro")
-        self.balas_cargadas -= balas_a_disparar
+        # self.balas_cargadas -= balas_a_disparar # aqui esta el error, desconte dos veces el disparo..
     
     def elegir_otro_tanque_al_azar(self):
         while True:
@@ -149,6 +148,6 @@ class Tanque():
             print(f"recuperacion de vida de {self.id}: {self.vidas}/5!🍃")
         
         self.balas_cap += 1
-        print(f"Capacidad maxima de balas aumentada a {self.balas_cap}. (cargadas actualmente: {self.balas_cargadas})")
+        print(f"Capacidad maxima de balas de {self.id} aumentada a {self.balas_cap}. (cargadas actualmente: {self.balas_cargadas})")
         
         
